@@ -1,0 +1,100 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<!-- this site uses BOOTSTRAP (goat). go to Views-> Shared -> _Layout to change the body and navbar -->
+@model List<HoloTracker.Models.HololiveModel>
+@{
+    ViewData["Title"] = "Home Page";
+    
+}
+<div>
+    <h3 class="display-4 text-white text-center">Hololive Live Updater</h3>
+    <center>
+        <form asp-controller="Home" asp-action="Index">
+            <table>
+                <tr>
+                    <td>
+                        <select name="value" id="option">
+                            <option disabled selected> -- select an option -- </option>
+                            <option value="live">Live</option>
+                            <option value="upcoming">Upcoming</option>
+                            <option value="ended">Ended</option>
+                        </select>
+                    </td>
+                    <td><input type="submit" value="Submit" /></td>
+                </tr>
+            </table>
+            <hr />
+        </form>
+    </center>
+</div>
+
+<div>
+    <div class="title"><p class="text-white">Live</p></div>
+    <div class="title"><p class="text-white">Upcoming</p></div>
+    <div class="title"><p class="text-white">Ended</p></div>
+</div>
+
+
+@if (Model != null)
+{
+    <table class="table table-bordered table-stripped table-sm">
+        <thread>
+            
+            <tr>
+                <th></th>
+            </tr>
+            <tr>
+                <th class="text-white text-center">Img</th>
+                <th class="text-white text-center">Channel Name</th>
+                <th class="text-white text-center">Title</th>      
+                <th class="text-white text-center">Link</th>
+            </tr>
+        </thread>
+
+        <!-- https://api.holotools.app/v1/live?channel_id=1&hide_channel_desc=1 -->
+        <!-- how to query parameters and include more than one parameter ?channel_id=1&hide_channel_desc=1 -->
+        <tbody>
+            @foreach(var item in Model)
+            {
+
+                <tr>
+                    <td>
+                        <div>
+                            <img src=@String.Format("{0}",item.channel.photo) width="70" height="70">
+                        </div>
+                    </td>
+                    <td class="text-white">@Html.DisplayFor(modelItem => item.channel.name)</td>
+                    <td class="text-white">@Html.DisplayFor(modelItem => item.title)</td>
+                    
+                    <td>
+                        <div>
+                            <a href=@String.Format("https://www.youtube.com/watch?v={0}",item.yt_video_key)
+                                target="_blank" rel="noopener noreferrer">Link</a>
+                        </div>
+                    </td>
+                </tr>               
+            }
+
+
+
+
+
+        </tbody>
+
+
+    </table>
+}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script>
+       
+    </script>
+
+    <!--  $(document).ready(function(){
+            $(#option).on('change', function(){
+                $(".title").hide();
+                $("#" + $(this).val().fadeIn(700);
+            }).change();
+        });-->
