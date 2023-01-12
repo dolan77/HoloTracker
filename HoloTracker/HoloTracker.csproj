@@ -10,4 +10,8 @@
     <PackageReference Include="Holodex.NET" Version="1.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="images\" />
+  </ItemGroup>
+
 </Project>
