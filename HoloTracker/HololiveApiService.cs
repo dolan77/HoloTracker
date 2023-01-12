@@ -1,8 +1,8 @@
 ﻿using Holodex.NET;
 using HoloTracker.Models;
-/*using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;*/
-using System.Text.Json;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+// using System.Text.Json;
 
 namespace HoloTracker
 {
@@ -12,10 +12,12 @@ namespace HoloTracker
         // parameters, you do live?(parameter=)
         // private static readonly HolodexClient client;
         private static readonly HttpClient client;
-
+        // static string? text = File.ReadAllText("D:\\VSProjects\\HoloTracker\\HoloTracker\\ApiKey.txt");
         static HololiveApiService()
         {
-            client = new HttpClient() { BaseAddress = new Uri("https://api.holotools.app/") };
+        //https://api.holotools.app/
+       
+            client = new HttpClient() { BaseAddress = new Uri("https://holodex.net/api") };
         }
 
         /*        public async Task<List<HololiveModel>> GetChannel(string id)
@@ -24,22 +26,20 @@ namespace HoloTracker
                 }*/
 
         // call this to get the Live videos of current members
-        public async Task<AllHololiveModel> GetLive()
+        public async Task<List<HololiveModel>> GetLive(string org)
         {
-            // show only 2 hours ahead
-            var url = string.Format("/v1/live?hide_channel_desc=1&max_upcoming_hours=48");
-            var result = new AllHololiveModel();
+
+            // show only 2 days ahead
+            var url = string.Format("/v2/live?org={0}&max_upcoming_hours=48", org);
+            var result = new List<HololiveModel>();
+            // client.DefaultRequestHeaders
+            // try to include the API key in the header of the HTTP request
             var response = await client.GetAsync(url); 
             if (response.IsSuccessStatusCode)
             {
                 var stringResponse = await response.Content.ReadAsStringAsync();
 
-                var options = new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                };
-
-                result = JsonSerializer.Deserialize<AllHololiveModel>(stringResponse);
+                result = JsonConvert.DeserializeObject<List<HololiveModel>>(stringResponse);
 
             }
 

@@ -3,23 +3,34 @@
 *@
 
 <!-- this site uses BOOTSTRAP (goat). go to Views-> Shared -> _Layout to change the body and navbar -->
-@model List<HoloTracker.Models.HololiveModel>
+<!-- at model List<HoloTracker.Models.HololiveModel> -->
+
+
+@model HoloTracker.Models.AllHololiveModel
 @{
     ViewData["Title"] = "Home Page";
     
 }
 <div>
-    <h3 class="display-4 text-white text-center">Hololive Live Updater</h3>
+    <h3 class="display-4 text-white text-center">Vtuber Live Updater</h3>
     <center>
         <form asp-controller="Home" asp-action="Index">
             <table>
                 <tr>
                     <td>
                         <select name="value" id="option">
+                            <label for="streamer-state">State: </label>
                             <option disabled selected> -- select an option -- </option>
                             <option value="live">Live</option>
                             <option value="upcoming">Upcoming</option>
-                            <option value="ended">Ended</option>
+                        </select>
+
+                        <select name="org" id="organization">
+                            <label for="streamer-org">Organization: </label>
+                            <option disabled selected> -- select an option -- </option>
+                            <option value="Hololive">Hololive</option>
+                            <option value="Independents">Independents</option>
+                            <option value="Nijisanji">Nisanji</option>
                         </select>
                     </td>
                     <td><input type="submit" value="Submit" /></td>
@@ -30,15 +41,43 @@
     </center>
 </div>
 
-<div>
-    <div class="title"><p class="text-white">Live</p></div>
-    <div class="title"><p class="text-white">Upcoming</p></div>
-    <div class="title"><p class="text-white">Ended</p></div>
-</div>
-
-
-@if (Model != null)
+@if(Model == null)
 {
+    <div>
+        <p class="text-white h1">Welcome to the Vtuber Live Checker. This utilizes the HoloDex API to retrieve information about Vtubers from Hololive, Nijisanji
+            or Independents
+        </p>
+        <hr style="color:white">
+        <h1 class="display-6 text-white">Search Bars</h1>
+        <hr style="color:white">
+        <div>
+            <p class="text-white">The State search bar has a two states: Live and Upcoming.</p>
+            <ul style="list-style:none" class = "text-white">
+                <li>Live represents the Vtuber talents currently streaming</li>
+                <li>Upcoming represents the Vtuber talents planning to stream within the next 48 hours.</li>
+            </ul>
+            <p class="text-white">The Organization Search Bar will filter Vtuber Streams: Hololive, Nijisanji, and Independents</p>
+        </div>
+
+        <h1 class="display-6 text-white">Search States</h1>
+        <hr style="color:white">
+        <div>
+            <p class="text-white">Leaving the State search bar empty will return both Live and Upcoming streams </p>
+            <p class="text-white">Leaving the Organization search bar empty will return Vtuber streams from Hololive, Nijisanji, and Independents</p>
+            <p class="text-white">Leaving both search bars empty will return you to this screen</p>
+            <p class="text-white">Have Fun Keeping up to date on Streams!</p>
+        </div>
+
+    </div>
+}
+
+@if (Model != null && Model.streamers.Count > 0)
+{
+    <div>
+        <div class="title"><p class="text-white font-weight-bold h2 text-capitalize">@Model.state Streams</p></div>
+    </div>
+
+
     <table class="table table-bordered table-stripped table-sm">
         <thread>
             
@@ -56,7 +95,7 @@
         <!-- https://api.holotools.app/v1/live?channel_id=1&hide_channel_desc=1 -->
         <!-- how to query parameters and include more than one parameter ?channel_id=1&hide_channel_desc=1 -->
         <tbody>
-            @foreach(var item in Model)
+            @foreach(var item in Model.streamers)
             {
 
                 <tr>
@@ -70,7 +109,7 @@
                     
                     <td>
                         <div>
-                            <a href=@String.Format("https://www.youtube.com/watch?v={0}",item.yt_video_key)
+                            <a href=@String.Format("https://www.youtube.com/watch?v={0}",item.id)
                                 target="_blank" rel="noopener noreferrer">Link</a>
                         </div>
                     </td>

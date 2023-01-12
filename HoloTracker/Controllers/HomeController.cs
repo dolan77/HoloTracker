@@ -13,17 +13,68 @@ namespace HoloTracker.Controllers
             _hololiveApiService = hololiveApiService;
         }
 
-        public async Task<IActionResult> Index(string value)
+        public async Task<IActionResult> Index(string value, string org) // find a way to get organization to be passed into here through Index.html
         {
-            AllHololiveModel talents = new AllHololiveModel();
-            List<HololiveModel> empty = new List<HololiveModel>();
-            talents = await _hololiveApiService.GetLive();
+            List<HololiveModel> talents = new List<HololiveModel>();
+            AllHololiveModel? temp;
 
-            if (value == "live") { return View(talents.live); }
-            else if (value == "upcoming") { return View(talents.upcoming); }
-            else if (value == "ended") { return View(talents.ended); }
+            // save an api call if there is no input
+            if (value == null && org == null)
+            {
+                temp = null;
+                return View(temp);
+            }
 
-            return View(empty);
+
+            talents = await _hololiveApiService.GetLive(org); // this is a list of HololiveModels async
+
+
+
+
+
+
+            // we want either live or not live
+            if (value != null)
+            {
+                if (value == "live")
+                {
+                    // List<HololiveModel> result = talents.Where(streamer => streamer.status == "live").ToList();
+
+                    // from talent in talents where talent.status == "live" select talent
+                    temp = new AllHololiveModel()
+                    {
+                        streamers = talents.Where(streamer => streamer.status == "live").ToList(),
+                        state = "live"
+                    };
+
+                    return View(temp);
+
+                    // return View(talents.Where(streamer => streamer.status == "live").ToList());
+                }
+
+                else if (value == "upcoming")
+                {
+                    temp = new AllHololiveModel()
+                    {
+                        streamers = talents.Where(streamer => streamer.status == "upcoming").ToList(),
+                        state = "upcoming"
+                    };
+                    return View(temp);
+                    // return View(talents.Where(streamer => streamer.status == "upcoming").ToList());
+                }
+            }
+
+
+
+            // we want both from a specific org
+            temp = new AllHololiveModel()
+            {
+                streamers = talents,
+                state = "Live and Upcoming"
+            };
+
+
+            return View(temp);
         }
 
         public IActionResult Privacy()
