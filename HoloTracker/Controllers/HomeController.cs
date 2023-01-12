@@ -34,6 +34,8 @@ namespace HoloTracker.Controllers
 
 
             // we want either live or not live
+            if (org == null) { org = "Everyone"; }
+
             if (value != null)
             {
                 if (value == "live")
@@ -44,7 +46,9 @@ namespace HoloTracker.Controllers
                     temp = new AllHololiveModel()
                     {
                         streamers = talents.Where(streamer => streamer.status == "live").ToList(),
-                        state = "live"
+                        state = "live",
+                        organization = org
+                        
                     };
 
                     return View(temp);
@@ -57,20 +61,20 @@ namespace HoloTracker.Controllers
                     temp = new AllHololiveModel()
                     {
                         streamers = talents.Where(streamer => streamer.status == "upcoming").ToList(),
-                        state = "upcoming"
+                        state = "upcoming",
+                        organization = org
                     };
                     return View(temp);
                     // return View(talents.Where(streamer => streamer.status == "upcoming").ToList());
                 }
             }
 
-
-
             // we want both from a specific org
             temp = new AllHololiveModel()
             {
                 streamers = talents,
-                state = "Live and Upcoming"
+                state = "Live and Upcoming",
+                organization= org
             };
 
 

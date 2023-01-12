@@ -52,10 +52,8 @@
         <hr style="color:white">
         <div>
             <p class="text-white">The State search bar has a two states: Live and Upcoming.</p>
-            <ul style="list-style:none" class = "text-white">
-                <li>Live represents the Vtuber talents currently streaming</li>
-                <li>Upcoming represents the Vtuber talents planning to stream within the next 48 hours.</li>
-            </ul>
+            <p class="text-white">Live represents the Vtuber talents currently streaming</p>
+            <p class="text-white">Upcoming represents the Vtuber talents planning to stream within the next 48 hours.</p>
             <p class="text-white">The Organization Search Bar will filter Vtuber Streams: Hololive, Nijisanji, and Independents</p>
         </div>
 
@@ -74,7 +72,7 @@
 @if (Model != null && Model.streamers.Count > 0)
 {
     <div>
-        <div class="title"><p class="text-white font-weight-bold h2 text-capitalize">@Model.state Streams</p></div>
+        <div class="title"><p class="text-white font-weight-bold h2 text-capitalize">@Model.state Streams from @Model.organization</p></div>
     </div>
 
 
@@ -92,7 +90,6 @@
             </tr>
         </thread>
 
-        <!-- https://api.holotools.app/v1/live?channel_id=1&hide_channel_desc=1 -->
         <!-- how to query parameters and include more than one parameter ?channel_id=1&hide_channel_desc=1 -->
         <tbody>
             @foreach(var item in Model.streamers)

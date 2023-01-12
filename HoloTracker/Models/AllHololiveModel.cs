@@ -8,5 +8,6 @@ namespace HoloTracker.Models
         
         public List<HololiveModel>? streamers { get; set; }
         public string? state { get; set; }
+        public string? organization { get; set; }
     }
 }
