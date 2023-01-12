@@ -10,8 +10,6 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddSingleton<IHololiveApiService, HololiveApiService>();
 
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

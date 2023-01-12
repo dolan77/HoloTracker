@@ -4,6 +4,6 @@ namespace HoloTracker
 {
     public interface IHololiveApiService
     {
-        Task<AllHololiveModel> GetLive();
+        Task<List<HololiveModel>> GetLive(string a);
     }
 }

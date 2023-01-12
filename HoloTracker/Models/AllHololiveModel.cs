@@ -1,10 +1,12 @@
-﻿namespace HoloTracker.Models
+﻿using Newtonsoft.Json;
+using System.Text.Json.Serialization;
+
+namespace HoloTracker.Models
 {
     public class AllHololiveModel
     {
-        public List<HololiveModel>? live { get; set; }
-        public List<HololiveModel>? upcoming { get; set; }
-        public List<HololiveModel>? ended { get; set; }
-        public bool? cached { get; set; }
+        
+        public List<HololiveModel>? streamers { get; set; }
+        public string? state { get; set; }
     }
 }
