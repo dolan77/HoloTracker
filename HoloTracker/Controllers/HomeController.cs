@@ -13,7 +13,7 @@ namespace HoloTracker.Controllers
             _hololiveApiService = hololiveApiService;
         }
 
-        public async Task<IActionResult> Index(string value, string org) // find a way to get organization to be passed into here through Index.html
+        public async Task<IActionResult> Index(string value, string org)
         {
             List<HololiveModel> talents = new List<HololiveModel>();
             AllHololiveModel? temp;
@@ -40,9 +40,6 @@ namespace HoloTracker.Controllers
             {
                 if (value == "live")
                 {
-                    // List<HololiveModel> result = talents.Where(streamer => streamer.status == "live").ToList();
-
-                    // from talent in talents where talent.status == "live" select talent
                     temp = new AllHololiveModel()
                     {
                         streamers = talents.Where(streamer => streamer.status == "live").ToList(),
@@ -50,10 +47,7 @@ namespace HoloTracker.Controllers
                         organization = org
                         
                     };
-
                     return View(temp);
-
-                    // return View(talents.Where(streamer => streamer.status == "live").ToList());
                 }
 
                 else if (value == "upcoming")
@@ -65,11 +59,10 @@ namespace HoloTracker.Controllers
                         organization = org
                     };
                     return View(temp);
-                    // return View(talents.Where(streamer => streamer.status == "upcoming").ToList());
                 }
             }
 
-            // we want both from a specific org
+            // we want both live and upcoming from a specific org
             temp = new AllHololiveModel()
             {
                 streamers = talents,
