@@ -2,9 +2,11 @@
 using HoloTracker.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+
 // using System.Text.Json;
 
 namespace HoloTracker
+    
 {
     public class HololiveApiService : IHololiveApiService
     {
@@ -17,6 +19,7 @@ namespace HoloTracker
         //https://api.holotools.app/
        
             client = new HttpClient() { BaseAddress = new Uri("https://holodex.net/api") };
+            client.DefaultRequestHeaders.Add("X-APIKEY", File.ReadAllLines("ApiKey.txt"));
         }
 
         // call this to get the Live videos of current members
@@ -28,7 +31,8 @@ namespace HoloTracker
             var result = new List<HololiveModel>();
 
             // try to include the API key in the header of the HTTP request, so far ive been not using the api key
-            var response = await client.GetAsync(url); 
+            var response = await client.GetAsync(url);
+            
             if (response.IsSuccessStatusCode)
             {
                 var stringResponse = await response.Content.ReadAsStringAsync();
